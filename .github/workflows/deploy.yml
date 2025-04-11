@@ -1,4 +1,4 @@
-name: game.codigofonte.tv deployment
+name: game.optometria.store deployment
 
 on:
   push:
@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: development
-      url: ${{vars.URL}}
+      url: ${{vars.URL_DEV}}
     needs: build
     steps:
       - name: Repo Checkout
@@ -28,7 +28,7 @@ jobs:
       - name: Hostinger Deployment
         uses: easingthemes/ssh-deploy@main
         with:
-          SSH_PRIVATE_KEY: ${{secrets.SERVER_SSH_KEY}}
+          SSH_PRIVATE_KEY: ${{secrets.HOSTINGER_SSH_KEY}}
           ARGS: "-rlgoDzvc --delete"
           SOURCE: "public/"
           REMOTE_HOST: ${{vars.REMOTE_HOST}}
