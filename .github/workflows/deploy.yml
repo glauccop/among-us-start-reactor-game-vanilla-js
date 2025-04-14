@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: development
-      url: ${{vars.URL_DEV}}
+      url: ${{vars.URL}}
     needs: build
     steps:
       - name: Repo Checkout
