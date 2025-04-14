@@ -1,4 +1,4 @@
-name: www.optometria.store deployment
+name: game.optometria.store deployment
 
 on:
   push:
