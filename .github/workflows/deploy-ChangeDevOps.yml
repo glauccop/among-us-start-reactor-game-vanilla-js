@@ -1,4 +1,4 @@
-name: game.optometria.store deployment
+name: Servicenow_ChangeDevOps deployment
 
 on:
   #push:
