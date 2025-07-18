@@ -57,6 +57,44 @@ jobs:
           REMOTE_PORT: ${{vars.REMOTE_PORT}}
           TARGET: ${{vars.TARGET}}
 
+  # cria a change DevOps no ServiceNow
+  deploy-change:
+    name: ServiceNow-ChangeDevOps
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ServiceNow DevOps Change Approval
+        uses: ServiceNow/servicenow-devops-change@v6.0.0
+        id: create
+        with:
+          ##devops-integration-user-name: ${{ vars.SN_DEVOPS_USER }}
+          ##devops-integration-user-password: ${{ secrets.SN_DEVOPS_PASSWORD }}
+          devops-integration-token: ${{ secrets.SN_DEVOPS_INTEGRATION_TOKEN }}
+          instance-url: ${{ vars.SN_INSTANCE_URL }}
+          tool-id: ${{ vars.SN_ORCHESTRATION_TOOL_ID }}
+          context-github: ${{ toJSON(github) }}
+          job-name: 'ServiceNow Change Approval'
+          change-request: >-
+            {
+              "setCloseCode":"true",
+              "attributes":{
+              "short_description":"Novo deploy App AmongUs",
+              "description":"Aguardando aprovação no ServiceNow",
+              "assignment_group":"68fab70e47b81250bda7e49b506d43ac",
+              "implementation_plan":"Procedimento CI/CD DevOps",
+              "backout_plan":"Restaurar versão anterior",
+              "test_plan":"Plano de teste referenciado no KB0000001"
+              }
+            }
+          interval: '100'
+          timeout: '3600'
+          changeCreationTimeOut: '3600'
+          #abortOnChangeCreationFailure: true
+          #abortOnChangeStepTimeout: true
+      - name: Output of Change Creation
+        run: echo "change-request-number = ${{ steps.create.outputs.change-request-number }} and change-request-sys-id = ${{ steps.create.outputs.change-request-sys-id }} " >> $GITHUB_OUTPUT
+        # deployment-gate: '{"environment":"deployment_gate","jobName":"Deploy"}'
 
   # deploy production
   deploy-production:
@@ -64,7 +102,7 @@ jobs:
     environment:
       name: production
       url: ${{vars.URL}}
-    needs: deploy-staging
+    needs: deploy-change
     steps:
       - name: Repo Checkout
         uses: actions/checkout@v1
