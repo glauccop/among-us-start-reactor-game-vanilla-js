@@ -79,7 +79,7 @@ jobs:
             {
               "setCloseCode":"true",
               "attributes":{
-              "short_description":"DevOps Git ServiceNowDummyGitDeploy",
+              "short_description":"Novo deploy App AmongUs",
               "description":"Aguardando aprovação no ServiceNow",
               "assignment_group":"68fab70e47b81250bda7e49b506d43ac",
               "implementation_plan":"Procedimento CI/CD DevOps",
