@@ -1,4 +1,4 @@
-name: game.optometria.store deployment
+name: game.nowdemo.io deployment
 
 on:
   push:
